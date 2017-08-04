@@ -8,13 +8,23 @@
         v-model="todo">
     </form>
 
+    <ul>
+      <!-- thing on the right side of the "in" is the array
+           thing on the left side of the "in" is the item in the array -->
+      <todo-item v-for="todo in todos" v-bind:todo="todo">
+        {{ todo }}
+      </todo-item>
+    </ul>
+
   </div>
 
 </template>
 
 <script>
+import TodoItem from './TodoItem.vue'
 export default {
   name: 'app',
+  components: { TodoItem },
   data () {
     return {
       todo: '',
