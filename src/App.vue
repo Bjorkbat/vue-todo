@@ -11,8 +11,10 @@
     <ul>
       <!-- thing on the right side of the "in" is the array
            thing on the left side of the "in" is the item in the array -->
-      <todo-item v-for="todo in todos" v-bind:todo="todo">
-        {{ todo }}
+      <todo-item
+        v-for="todo in todos"
+        v-bind:todo="todo"
+        v-on:delete="deleteToDo">
       </todo-item>
     </ul>
 
@@ -34,13 +36,26 @@ export default {
   },
 
   methods: {
+
     addToDo: function() {
 
       // Push the todo typed inside the input into an array called todos
       this.todos.push(this.todo);
       this.todo = '';
 
+    },
+
+    deleteToDo: function(todo) {
+
+      for(var i = 0; i < this.todos.length; i ++) {
+        if (this.todos[i] == todo) {
+          // Delete this todo (and just this one) from the array
+          this.todos.splice(i, 1);
+        }
+      }
+
     }
+
   }
 }
 </script>
@@ -62,11 +77,6 @@ h1, h2 {
 ul {
   list-style-type: none;
   padding: 0;
-}
-
-li {
-  display: inline-block;
-  margin: 0 10px;
 }
 
 a {
