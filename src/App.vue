@@ -17,7 +17,8 @@
       <todo-item
         v-for="todo in todos"
         v-bind:todo="todo"
-        v-on:delete="deleteToDo">
+        v-on:delete="deleteToDo"
+        v-on:edit="editToDo">
       </todo-item>
     </ul>
 
@@ -45,9 +46,9 @@ export default {
     // All our data function does is return an object with some fairly simple
     // attributes attached to it.
     return {
+      index: false,
       todo: '',
       todos: [],
-      msg: 'Welcome to Your Vue.js App'
     }
 
   },
@@ -55,11 +56,20 @@ export default {
   methods: {
 
     // Adds new todos to our list.  Pretty simple really.  Just adds the
-    // todo from the form to an array and clears the form input
+    // todo from the form to an array and clears the form input.
+    // However, if index !== false, then that means that we're editing.  We're
+    // going to find the spot in the array indicated by the index and edit it,
+    // thus preserving the order of our todos
     addToDo: function() {
 
-      // Push the todo typed inside the input into an array called todos
-      this.todos.push(this.todo);
+      if (this.index !== false) {
+        // Edit the todo
+        this.todos[this.index] = this.todo;
+      } else {
+        // Push the todo typed inside the input into an array called todos
+        this.todos.push(this.todo);
+      }
+
       this.todo = '';
 
     },
@@ -76,6 +86,23 @@ export default {
         }
       }
 
+    },
+
+    // Used to edit todos.
+    editToDo: function(todo) {
+
+      // Iterate through the array until you find a todo that matches the one
+      // we want to edit.  When you find it, save the index.
+      // NOTE: Normally we'd find items by a unique ID (since it's entirely
+      // possible to have todo items that have the same values, which could
+      // cause some unexpected behavior), but this will fly for now.
+      for(var i = 0; i < this.todos.length; i ++) {
+        if (this.todos[i] == todo) {
+          this.index = i;
+          this.todo = todo;
+          return;
+        }
+      }
     }
 
   }
